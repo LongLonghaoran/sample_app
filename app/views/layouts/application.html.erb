@@ -12,6 +12,7 @@
     <%=render 'layouts/header'%>
     <div class="container">
       <%= yield %>
+      <h1><%=User.first && User.first.name%></h1>
     </div>
     <%= render 'layouts/footer'%>
   </body>
