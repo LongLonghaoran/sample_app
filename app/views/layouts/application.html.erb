@@ -11,9 +11,14 @@
   <body>
     <%=render 'layouts/header'%>
     <div class="container">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
       <%= yield %>
-      <h1><%=User.first && User.first.name%></h1>
+      <h1><%=@user && @user.name%></h1>
     </div>
     <%= render 'layouts/footer'%>
+    <!-- 使用debug方法显示调试信息，并且限定只在开发环境中显示 -->
+    <%= debug(params) if Rails.env.development? %>
   </body>
 </html>
