@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   #利用回调函数在对象存进数据库之前转为小写
   before_save {self.email = self.email.downcase}
+  before_create :create_remember_token
   #presence验证存在性，length: {maximum: }验证最大长度
   validates :name,  presence: true, length: {maximum: 50}
   #format: {with: regex}验证数据格式,unique唯一性校验
@@ -11,4 +12,17 @@ class User < ActiveRecord::Base
   #比如页面需要两次密码，在模型确认两次密码是否一致
   has_secure_password
   validates :password, length: { minimum: 6 }
+
+  def User.new_remember_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def User.encrypt(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  private
+  def create_remember_token
+    self.remember_token = User.encrypt(User.new_remember_token)
+  end
 end
