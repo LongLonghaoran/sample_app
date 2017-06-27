@@ -1,6 +1,13 @@
 source 'https://rubygems.org'
 
 
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+
+
+#faker 用于生产随机的姓名？
+gem 'faker'
+
 #bootstrap
 gem 'bootstrap-sass', '2.3.2.0'
 
