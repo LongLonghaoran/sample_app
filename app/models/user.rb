@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :microposts
   #利用回调函数在对象存进数据库之前转为小写
   before_save {self.email = self.email.downcase}
   before_create :create_remember_token
@@ -12,6 +13,11 @@ class User < ActiveRecord::Base
   #比如页面需要两次密码，在模型确认两次密码是否一致
   has_secure_password
   validates :password, length: { minimum: 6 }
+
+  def feed
+    # This is preliminary. See "Following users" for the full implementation.
+    Micropost.where("user_id = ?", id)
+  end
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64

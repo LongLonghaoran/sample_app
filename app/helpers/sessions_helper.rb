@@ -20,6 +20,16 @@ module SessionsHelper
     !current_user.nil?
   end
 
+
+  # Before filters
+  def signed_in_user
+    unless signed_in?
+    store_location
+    redirect_to signin_url, notice: "Please sign in."
+    end
+  end  
+
+
   def sign_out
     current_user = nil
     cookies.delete(:remember_token)
