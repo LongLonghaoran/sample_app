@@ -1,5 +1,12 @@
 class User < ActiveRecord::Base
   has_many :microposts
+  has_many :relationships,foreign_key: "follower_id",dependent: :destroy
+  has_many :reverse_relationships,foreign_key: "followed_id",
+                                  dependent: :destroy,
+                                  class_name: "Relationship"
+  has_many :followed_users,through: :relationships,source: :followed
+  has_many :followers,through: :reverse_relationships
+  # has_many :followeds,through: :relationships
   #利用回调函数在对象存进数据库之前转为小写
   before_save {self.email = self.email.downcase}
   before_create :create_remember_token
@@ -13,10 +20,22 @@ class User < ActiveRecord::Base
   #比如页面需要两次密码，在模型确认两次密码是否一致
   has_secure_password
   validates :password, length: { minimum: 6 }
+  def following？(other_user)
+    relationships.find_by(followed_id: other_user.id)
+  end
+
+  def follow!(other_user)
+    relationships.create!(followed_id: other_user.id)
+  end
+
+  def unfollow!(other_user)
+    relationships.find_by(followed_id: other_user.id).destroy!
+  end
 
   def feed
     # This is preliminary. See "Following users" for the full implementation.
-    Micropost.where("user_id = ?", id)
+    # Micropost.where("user_id = ?", id)
+    Micropost.from_users_followed_by self
   end
 
   def User.new_remember_token

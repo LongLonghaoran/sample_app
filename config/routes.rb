@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+
   resources :microposts, only: [:create, :destroy]
-  resources :users
+  resources :relationships,only: [:create,:destroy]
+  resources :sessions, only: [:new,:create,:destroy]
   # get "static_pages/home"
   # get "static_pages/help"
   # get "static_pages/about"
@@ -11,7 +18,6 @@ Rails.application.routes.draw do
   match '/about', to: 'static_pages#about',via: 'get'
   match '/contact', to: 'static_pages#contact',via: 'get'
   match '/signup',to: 'users#new',via: 'get'
-  resources :sessions, only: [:new,:create,:destroy]
   match '/signin',to: 'sessions#new', via: 'get'
   match '/signout',to: 'sessions#destroy', via: 'delete'
 #The priority is based upon order of creation: first created -> highest priority.
