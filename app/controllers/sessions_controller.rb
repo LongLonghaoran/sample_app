@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  include ApplicationHelper
   def new
 
   end
@@ -20,5 +21,10 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
     redirect_to root_path
+  end
+
+  def dingding_login
+    code = params[:code]
+    sign_user_by_dd(code)
   end
 end
