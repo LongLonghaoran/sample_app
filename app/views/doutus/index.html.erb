@@ -1,0 +1,13 @@
+<% provide(:title, 'All users') %>
+<h1>斗图啦</h1>
+<%=form_tag doutus_path, method: :get do%>
+  <div><input name="key" value=<%= params[:key]%>></input></div>
+  <div><%= submit_tag '搜索' %></div>
+<%- end %>
+<ul class="users">
+  <% @images.each do |img| %>
+    <li>
+      <%= image_tag(img["image_url"])%>
+    </li>
+  <% end %>
+</ul>
