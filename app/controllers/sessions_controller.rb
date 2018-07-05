@@ -24,7 +24,6 @@ class SessionsController < ApplicationController
   end
 
   def dingding_login
-    code = params[:code]
-    sign_user_by_dd(code)
+    render json: sign_user_by_dd(params[:code])
   end
 end
