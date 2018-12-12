@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
   include ApplicationHelper
+  include SessionsHelper
+  skip_before_action :login_required
   def new
 
   end
@@ -18,6 +20,14 @@ class SessionsController < ApplicationController
     end
   end
 
+  # redirect to here after omniauth authenticate
+  def omniauth_signed
+    @user = User.find_or_create_from_auth_hash!(auth_hash)
+    current_user= @user
+    session["user_name"] = @user.name
+    redirect_to '/'
+  end
+
   def destroy
     sign_out
     redirect_to root_path
@@ -25,5 +35,11 @@ class SessionsController < ApplicationController
 
   def dingding_login
     render json: sign_user_by_dd(params[:code])
+  end
+
+  protected
+
+  def auth_hash
+    request.env['omniauth.auth']
   end
 end

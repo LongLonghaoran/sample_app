@@ -12,8 +12,9 @@ module SessionsHelper
   end
 
   def current_user
-    remember_token = User.encrypt(cookies[:remember_token])
-    @current_user ||= User.find_by(remember_token: remember_token)
+    # remember_token = User.encrypt(cookies[:remember_token])
+    # @current_user ||= User.find_by(remember_token: remember_token)
+    @current_user ||= User.find_by(name: session["user_name"])
   end
 
   def signed_in?
@@ -32,6 +33,7 @@ module SessionsHelper
 
   def sign_out
     current_user = nil
+    session.clear
     cookies.delete(:remember_token)
   end
 

@@ -1,0 +1,4 @@
+development:
+  CUSTOM_PROVIDER_URL: 'http://sso-test.wfl-ischool.cn'
+  APP_ID: 'MxJ8I8uhi6MGceN-'
+  APP_SECRET: 'T1ZXD8TIWeVAA90xanvroA'

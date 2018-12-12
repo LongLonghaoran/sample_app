@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  match '/auth/:provider/callback', to: 'sessions#omniauth_signed', via: 'get'
+
   resources :users do
     member do
       get :following, :followers
